@@ -1,0 +1,27 @@
+<!-- Terminal Window Instance -->
+<div id="terminal-{{.ID}}" class="retro-window active-window" data-session-id="{{.ID}}"
+     style="left: {{.InitialX}}px; top: {{.InitialY}}px; width: {{.InitialWidth}}px; height: {{.InitialHeight}}px;"
+     ontouchstart="desktop.bringToFront('{{.ID}}')">
+    <div class="window-titlebar"
+         onmousedown="desktop.startDrag(event, '{{.ID}}')"
+         ontouchstart="desktop.startDrag(event, '{{.ID}}')"
+         ondblclick="desktop.toggleMaximize('{{.ID}}')">
+        <div class="titlebar-left">
+            <button class="win-btn win-menu" title="Menu" onclick="desktop.openWindowMenu(event, '{{.ID}}')">=</button>
+        </div>
+        <span id="term-title-{{.ID}}" class="titlebar-title">{{.Title}}</span>
+        <div class="titlebar-controls">
+            <button class="win-btn win-max" title="Maximize" onclick="desktop.toggleMaximize('{{.ID}}')">^</button>
+            <button class="win-btn win-close" title="Close"
+                    hx-delete="/terminal/{{.ID}}"
+                    hx-target="#terminal-{{.ID}}"
+                    hx-swap="outerHTML">X</button>
+        </div>
+    </div>
+    <div class="window-body">
+        <div id="term-container-{{.ID}}" class="terminal-screen"></div>
+    </div>
+    <div class="window-resize-handle"
+         onmousedown="desktop.startResize(event, '{{.ID}}')"
+         ontouchstart="desktop.startResize(event, '{{.ID}}')"></div>
+</div>

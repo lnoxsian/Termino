@@ -1,0 +1,53 @@
+<!-- Fullscreen Minimal Desktop Workspace -->
+<div id="desktop" hx-post="/terminal/new" hx-trigger="load" hx-swap="beforeend">
+</div>
+
+<!-- Right Click Context Menu -->
+<div id="context-menu" class="retro-context-menu">
+    <div class="menu-item" hx-post="/terminal/new" hx-target="#desktop" hx-swap="beforeend" onclick="desktop.closeContextMenu()">
+        <span class="menu-text">New Terminal</span>
+    </div>
+    <div class="menu-separator"></div>
+    <div class="menu-item" onclick="desktop.cascadeWindows(); desktop.closeContextMenu();">
+        <span class="menu-text">Cascade Windows</span>
+    </div>
+    <div class="menu-item" onclick="desktop.tileWindows(); desktop.closeContextMenu();">
+        <span class="menu-text">Tile Windows</span>
+    </div>
+    <div class="menu-separator"></div>
+    <div class="menu-item" onclick="desktop.openAboutDialog(); desktop.closeContextMenu();">
+        <span class="menu-text">About</span>
+    </div>
+</div>
+
+<!-- About Modal Dialog -->
+<div id="about-dialog">
+    <div class="window-titlebar">
+        <span class="titlebar-title">About</span>
+        <div class="titlebar-controls">
+            <button class="win-btn win-close" onclick="desktop.closeAboutDialog()">X</button>
+        </div>
+    </div>
+    <div class="about-body">
+        <div class="about-content">
+            <div class="about-title">Termino</div>
+            <p>Minimal terminal environment.</p>
+            <br>
+            <p><strong>Shell:</strong> {{.Shell}}</p>
+            <p><strong>Tip:</strong> Right-click, long-press, or tap [=] to open menu.</p>
+            <div class="about-themes">
+                <label for="theme-select" class="about-label"><strong>Color Screen:</strong></label>
+                <select id="theme-select" class="retro-select" onchange="desktop.selectTheme(this.value)">
+                    <option value="classic">Classic (Dark)</option>
+                    <option value="green">Green CRT</option>
+                    <option value="amber">Amber CRT</option>
+                    <option value="blue">Cobalt Blue</option>
+                    <option value="monochrome">Monochrome</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="about-buttons">
+        <button class="retro-btn" onclick="desktop.closeAboutDialog()">OK</button>
+    </div>
+</div>

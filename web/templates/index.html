@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#181818">
+    <title>Termino</title>
+    <!-- Vendor Stylesheets -->
+    <link rel="stylesheet" href="/vendor/xterm.css">
+    <!-- App Stylesheets -->
+    <link rel="stylesheet" href="/static/css/desktop.css">
+    <link rel="stylesheet" href="/static/css/terminal.css">
+    <!-- Vendor Scripts -->
+    <script src="/vendor/htmx.min.js"></script>
+    <script src="/vendor/xterm.js"></script>
+    <script src="/vendor/xterm-addon-fit.js"></script>
+    <!-- Server Config Injection -->
+    <script>
+        window.APP_CONFIG = {
+            theme: {{.Theme}},
+            shell: {{.Shell}},
+            fontSize: {{.FontSize}},
+            scrollback: {{.Scrollback}}
+        };
+    </script>
+    <!-- App Scripts -->
+    <script src="/static/js/terminal.js"></script>
+    <script src="/static/js/desktop.js"></script>
+</head>
+<body class="theme-{{.Theme}}">
+    {{template "desktop.html" .}}
+</body>
+</html>

@@ -6,9 +6,6 @@
          onmousedown="desktop.startDrag(event, '{{.ID}}')"
          ontouchstart="desktop.startDrag(event, '{{.ID}}')"
          ondblclick="desktop.toggleMaximize('{{.ID}}')">
-        <div class="titlebar-left">
-            <button class="win-btn win-menu" title="Menu" onclick="desktop.openWindowMenu(event, '{{.ID}}')">=</button>
-        </div>
         <span id="term-title-{{.ID}}" class="titlebar-title">{{.Title}}</span>
         <div class="titlebar-controls">
             <button class="win-btn win-max" title="Maximize" onclick="desktop.toggleMaximize('{{.ID}}')">^</button>

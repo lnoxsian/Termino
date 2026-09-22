@@ -34,11 +34,18 @@
             <p>Minimal terminal environment.</p>
             <br>
             <p><strong>Shell:</strong> {{.Shell}}</p>
-            <p><strong>Tip:</strong> Right-click, long-press, or tap [=] to open menu.</p>
+            <p><strong>Tip:</strong> Right-click or long-press to open menu.</p>
             <div class="about-themes">
-                <label for="theme-select" class="about-label"><strong>Color Screen:</strong></label>
+                <div class="theme-mode-row">
+                    <label for="theme-select" class="about-label"><strong>Color Screen:</strong></label>
+                    <div class="mode-toggle-group">
+                        <button type="button" class="mode-toggle-btn active" id="mode-btn-dark" onclick="desktop.setThemeMode('dark')">Dark</button>
+                        <button type="button" class="mode-toggle-btn" id="mode-btn-light" onclick="desktop.setThemeMode('light')">Light</button>
+                    </div>
+                </div>
                 <select id="theme-select" class="retro-select" onchange="desktop.selectTheme(this.value)">
                     <option value="classic">Classic (Dark)</option>
+                    <option value="light">Classic (Light)</option>
                     <option value="green">Green CRT</option>
                     <option value="amber">Amber CRT</option>
                     <option value="blue">Cobalt Blue</option>

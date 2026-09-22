@@ -198,22 +198,6 @@ const desktop = {
         if (e.cancelable) e.preventDefault();
     },
 
-    // ---------------- Window System Menu ([=] Button) ----------------
-    openWindowMenu(e, id) {
-        if (e) e.stopPropagation();
-        const win = document.getElementById(`terminal-${id}`);
-        if (!win) return;
-        this.bringToFront(id);
-
-        const btn = e ? e.currentTarget : null;
-        if (btn) {
-            const rect = btn.getBoundingClientRect();
-            this.openContextMenu(rect.left, rect.bottom + 2);
-        } else {
-            this.openContextMenu(10, 36);
-        }
-    },
-
     // ---------------- Cascade & Tile Layouts ----------------
     cascadeWindows() {
         const windows = Array.from(document.querySelectorAll('.retro-window'));
@@ -306,24 +290,103 @@ const desktop = {
     },
 
     // ---------------- Themes & About Modal ----------------
-    selectTheme(themeName) {
-        document.body.className = `theme-${themeName}`;
-        localStorage.setItem('termino-theme', themeName);
-        const sel = document.getElementById('theme-select');
-        if (sel && sel.value !== themeName) {
-            sel.value = themeName;
+    getCurrentTheme() {
+        const bodyClass = document.body.className || '';
+        const match = bodyClass.match(/theme-([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+            return match[1];
         }
+        return localStorage.getItem('termino-theme') || (window.APP_CONFIG && window.APP_CONFIG.theme) || 'classic';
+    },
+
+    isLightTheme(themeName) {
+        const t = themeName || this.getCurrentTheme();
+        return t === 'light';
+    },
+
+    setThemeMode(mode) {
+        if (mode === 'light') {
+            this.selectTheme('light');
+        } else {
+            const savedDark = localStorage.getItem('termino-last-dark') || 'classic';
+            this.selectTheme(savedDark === 'light' ? 'classic' : savedDark);
+        }
+    },
+
+    selectTheme(themeName) {
+        let canonicalTheme = themeName || 'classic';
+        if (canonicalTheme === 'dark' || canonicalTheme === 'default') {
+            canonicalTheme = 'classic';
+        }
+
+        document.body.className = `theme-${canonicalTheme}`;
+        localStorage.setItem('termino-theme', canonicalTheme);
+
+        if (this.isLightTheme(canonicalTheme)) {
+            localStorage.setItem('termino-last-light', canonicalTheme);
+        } else {
+            localStorage.setItem('termino-last-dark', canonicalTheme);
+        }
+
+        const sel = document.getElementById('theme-select');
+        if (sel && sel.value !== canonicalTheme) {
+            sel.value = canonicalTheme;
+        }
+
+        this.updateThemeModeButtons(canonicalTheme);
+        this.updateMetaThemeColor();
+
         if (typeof updateAllTerminalThemes === 'function') {
             updateAllTerminalThemes();
+        }
+    },
+
+    updateThemeModeButtons(themeName) {
+        const isLight = this.isLightTheme(themeName || this.getCurrentTheme());
+        const btnDark = document.getElementById('mode-btn-dark');
+        const btnLight = document.getElementById('mode-btn-light');
+        if (btnDark && btnLight) {
+            if (isLight) {
+                btnDark.classList.remove('active');
+                btnLight.classList.add('active');
+            } else {
+                btnLight.classList.remove('active');
+                btnDark.classList.add('active');
+            }
+        }
+    },
+
+    updateMetaThemeColor() {
+        const style = getComputedStyle(document.body);
+        const desktopBg = style.getPropertyValue('--desktop').trim();
+        if (desktopBg) {
+            let meta = document.getElementById('meta-theme-color');
+            if (!meta) {
+                meta = document.querySelector('meta[name="theme-color"]');
+            }
+            if (meta) {
+                meta.setAttribute('content', desktopBg);
+            }
         }
     },
 
     restoreSavedTheme() {
         const saved = localStorage.getItem('termino-theme') || localStorage.getItem('retroterm-theme');
         if (saved) {
-            document.body.className = `theme-${saved}`;
-            const sel = document.getElementById('theme-select');
-            if (sel) sel.value = saved;
+            this.selectTheme(saved);
+            return;
+        }
+
+        const configTheme = (window.APP_CONFIG && window.APP_CONFIG.theme);
+        if (configTheme && configTheme !== 'default') {
+            this.selectTheme(configTheme);
+            return;
+        }
+
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            this.selectTheme('light');
+        } else {
+            this.selectTheme('classic');
         }
     },
 
@@ -332,11 +395,12 @@ const desktop = {
         const dlg = document.getElementById('about-dialog');
         if (dlg) {
             dlg.classList.add('open');
+            const current = this.getCurrentTheme();
             const sel = document.getElementById('theme-select');
             if (sel) {
-                const current = localStorage.getItem('termino-theme') || localStorage.getItem('retroterm-theme') || (window.APP_CONFIG && window.APP_CONFIG.theme) || 'classic';
                 sel.value = current;
             }
+            this.updateThemeModeButtons(current);
         }
     },
 
@@ -443,13 +507,13 @@ const desktop = {
 
         // Close context menu when tapping/clicking outside
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('#context-menu') && !e.target.closest('.win-menu')) {
+            if (!e.target.closest('#context-menu')) {
                 this.closeContextMenu();
             }
         });
 
         document.addEventListener('touchstart', (e) => {
-            if (!e.target.closest('#context-menu') && !e.target.closest('.win-menu')) {
+            if (!e.target.closest('#context-menu')) {
                 this.closeContextMenu();
             }
         }, { passive: true });

@@ -12,13 +12,42 @@ function getTerminalThemeFromCSS() {
     const bg = style.getPropertyValue('--terminal-bg').trim() || '#121212';
     const fg = style.getPropertyValue('--terminal-fg').trim() || '#e0e0e0';
     const cursor = style.getPropertyValue('--terminal-cursor').trim() || '#e0e0e0';
+    const selection = style.getPropertyValue('--terminal-selection').trim();
+    const mode = style.getPropertyValue('--theme-mode').trim();
+    const isLight = mode === 'light' || document.body.classList.contains('theme-light');
+
+    if (isLight) {
+        return {
+            background: bg,
+            foreground: fg,
+            cursor: cursor,
+            cursorAccent: bg,
+            selectionBackground: selection || 'rgba(0, 0, 0, 0.18)',
+            black: '#000000',
+            red: '#cd3131',
+            green: '#008000',
+            yellow: '#946600',
+            blue: '#0451a5',
+            magenta: '#bc05bc',
+            cyan: '#0598bc',
+            white: '#555555',
+            brightBlack: '#666666',
+            brightRed: '#cd3131',
+            brightGreen: '#14ce14',
+            brightYellow: '#b5ba00',
+            brightBlue: '#0451a5',
+            brightMagenta: '#bc05bc',
+            brightCyan: '#0598bc',
+            brightWhite: '#1f1f1f',
+        };
+    }
 
     return {
         background: bg,
         foreground: fg,
         cursor: cursor,
         cursorAccent: bg,
-        selectionBackground: 'rgba(255, 255, 255, 0.25)',
+        selectionBackground: selection || 'rgba(255, 255, 255, 0.25)',
         black: '#000000',
         red: '#cd0000',
         green: '#00cd00',

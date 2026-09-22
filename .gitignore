@@ -1,0 +1,67 @@
+# ==============================================================================
+# Termino (TermWeb) .gitignore
+# ==============================================================================
+
+# Binaries & Compiled Outputs
+/bin/
+/termino
+/retroterm
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test & Profiling Artifacts
+*.test
+*.out
+coverage.html
+profile.out
+*.prof
+*.pprof
+sha256sums.txt
+
+# Go Workspace & CGO Artifacts
+go.work
+go.work.sum
+_test/
+_testmain.go
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+_cgo_export.*
+
+# Environment & Local Configurations
+.env
+.env.local
+.env.*.local
+*.local.toml
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# Editors & IDEs
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+*~
+.*.swp
+.*.swo
+
+# Temporary & Log Files
+*.log
+*.tmp
+*.temp
+tmp/
+temp/

@@ -58,8 +58,13 @@ func (s *Server) handleDesktopIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	theme := s.cfg.Desktop.Theme
+	if theme == "" || theme == "default" {
+		theme = "classic"
+	}
+
 	data := DesktopViewData{
-		Theme:      s.cfg.Desktop.Theme,
+		Theme:      theme,
 		Shell:      s.cfg.Terminal.Shell,
 		FontSize:   s.cfg.Terminal.FontSize,
 		Scrollback: s.cfg.Terminal.Scrollback,

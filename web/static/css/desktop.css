@@ -3,7 +3,8 @@
    ========================================================================== */
 
 /* ---------------- Themes (CSS Variables) ---------------- */
-:root, .theme-classic {
+:root, .theme-classic, .theme-dark, .theme-default {
+    --theme-mode: dark;
     --desktop: #181818;
     --window: #202020;
     --border: #333333;
@@ -15,8 +16,32 @@
     --terminal-bg: #121212;
     --terminal-fg: #e0e0e0;
     --terminal-cursor: #e0e0e0;
+    --terminal-selection: rgba(255, 255, 255, 0.25);
     --button: #262626;
     --button-text: #e0e0e0;
+    --btn-hover: rgba(255, 255, 255, 0.08);
+    --btn-active: rgba(255, 255, 255, 0.16);
+}
+
+/* Light Theme: Exact inverted values of the Dark Theme */
+.theme-light {
+    --theme-mode: light;
+    --desktop: #e7e7e7;
+    --window: #dfdfdf;
+    --border: #cccccc;
+    --border-active: #aaaaaa;
+    --titlebar: #d9d9d9;
+    --titlebar-inactive: #e5e5e5;
+    --titlebar-text: #1f1f1f;
+    --titlebar-inactive-text: #8f8f8f;
+    --terminal-bg: #ededed;
+    --terminal-fg: #1f1f1f;
+    --terminal-cursor: #1f1f1f;
+    --terminal-selection: rgba(0, 0, 0, 0.18);
+    --button: #d9d9d9;
+    --button-text: #1f1f1f;
+    --btn-hover: rgba(0, 0, 0, 0.08);
+    --btn-active: rgba(0, 0, 0, 0.16);
 }
 
 .theme-green {
@@ -172,12 +197,6 @@ html, body {
     border-bottom-color: var(--border-active);
 }
 
-.titlebar-left {
-    display: flex;
-    align-items: center;
-    z-index: 2;
-}
-
 .titlebar-title {
     position: absolute;
     left: 50%;
@@ -194,13 +213,14 @@ html, body {
 }
 
 .titlebar-controls {
+    margin-left: auto;
     display: flex;
     align-items: center;
     gap: 2px;
     z-index: 2;
 }
 
-/* Flat Window Buttons: [=] [^] [X] */
+/* Flat Window Buttons: [^] [X] */
 .win-btn {
     width: 22px;
     height: 20px;
@@ -219,12 +239,12 @@ html, body {
 }
 
 .win-btn:hover {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: var(--btn-hover, rgba(255, 255, 255, 0.08));
     border-color: var(--border);
 }
 
 .win-btn:active {
-    background-color: rgba(255, 255, 255, 0.16);
+    background-color: var(--btn-active, rgba(255, 255, 255, 0.16));
 }
 
 .win-btn.win-close:hover {
@@ -338,6 +358,46 @@ html, body {
     border-top: 1px solid var(--border);
 }
 
+.theme-mode-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.theme-mode-row .about-label {
+    margin-bottom: 0;
+}
+
+.mode-toggle-group {
+    display: inline-flex;
+    border: 1px solid var(--border);
+    background-color: var(--button);
+}
+
+.mode-toggle-btn {
+    border: none;
+    background: transparent;
+    color: var(--button-text);
+    padding: 2px 10px;
+    font-size: 11px;
+    font-family: inherit;
+    cursor: pointer;
+    line-height: 1.4;
+    user-select: none;
+    touch-action: manipulation;
+}
+
+.mode-toggle-btn:hover {
+    background-color: var(--btn-hover, rgba(255, 255, 255, 0.08));
+}
+
+.mode-toggle-btn.active {
+    background-color: var(--titlebar);
+    color: var(--titlebar-text);
+    font-weight: bold;
+}
+
 .about-label {
     display: block;
     margin-bottom: 6px;
@@ -389,7 +449,7 @@ html, body {
 }
 
 .retro-btn:active {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--btn-active, rgba(255, 255, 255, 0.1));
 }
 
 /* ---------------- Mobile Phone Responsive Optimizations ---------------- */
@@ -475,5 +535,10 @@ html, body {
         height: 32px;
         font-size: 13px;
         padding: 4px 16px;
+    }
+
+    .mode-toggle-btn {
+        padding: 4px 12px;
+        font-size: 12px;
     }
 }
